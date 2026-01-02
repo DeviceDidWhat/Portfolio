@@ -187,7 +187,7 @@ const Hero = () => {
             variants={itemVariants}
           >
             <a
-              href="https://github.com"
+              href="https://github.com/DeviceDidWhat"
               target="_blank"
               rel="noopener noreferrer"
               className="cursor-pointer text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-110 active:scale-95"
@@ -196,7 +196,7 @@ const Hero = () => {
               <Github size={28} strokeWidth={1.5} />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/kavya-bhanvadia-58026a328/"
               target="_blank"
               rel="noopener noreferrer"
               className="cursor-pointer text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-110 active:scale-95"
@@ -205,7 +205,7 @@ const Hero = () => {
               <Linkedin size={28} strokeWidth={1.5} />
             </a>
             <a
-              href="mailto:hello@example.com"
+              href="mailto:kavyabhanvadia@gmail.com"
               className="cursor-pointer text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-110 active:scale-95"
               aria-label="Email Contact"
             >

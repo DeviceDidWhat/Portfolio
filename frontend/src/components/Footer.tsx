@@ -1,14 +1,14 @@
-import { Github, Linkedin, Mail, Twitter, Heart } from "lucide-react";
+import { Github, Linkedin, Mail, Twitter, Heart, Instagram } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   const socialLinks = [
-    { icon: <Github size={18} />, href: "https://github.com", label: "GitHub" },
-    { icon: <Linkedin size={18} />, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: <Twitter size={18} />, href: "https://twitter.com", label: "Twitter" },
-    { icon: <Mail size={18} />, href: "mailto:hello@example.com", label: "Email" },
+    { icon: <Github size={18} />, href: "https://github.com/DeviceDidWhat", label: "GitHub" },
+    { icon: <Linkedin size={18} />, href: "https://www.linkedin.com/in/kavya-bhanvadia-58026a328/", label: "LinkedIn" },
+    { icon: <Instagram size={18} />, href: "https://www.instagram.com/kavya_b4", label: "Instagram" },
+    { icon: <Mail size={18} />, href: "mailto:kavyabhanvadia@gmail.com", label: "Email" },
   ];
 
   return (
@@ -32,6 +32,7 @@ const Footer = () => {
                 <motion.a
                   key={link.label}
                   href={link.href}
+                  target="_blank"
                   aria-label={link.label}
                   className="group relative flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-background/50 backdrop-blur-sm hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
                   whileTap={{ scale: 0.95 }}

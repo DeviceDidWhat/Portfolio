@@ -1,4 +1,4 @@
-import { Mail, MapPin, Send, Github, Linkedin, Twitter, Clock, Zap, Code, Sparkles, Calendar, Thermometer, Sun, Cloud, Snowflake } from "lucide-react";
+import { Mail, MapPin, Send, Github, Linkedin, Twitter, Clock, Zap, Code, Sparkles, Calendar, Thermometer, Sun, Cloud, Snowflake, Instagram } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
@@ -12,50 +12,94 @@ const Contact = () => {
   });
   const [isTyping, setIsTyping] = useState(false);
   const [temperature, setTemperature] = useState<number | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Fetch live temperature from OpenWeatherMap API
+  // Auto-clear status message after 5 seconds
+  useEffect(() => {
+    if (submitStatus.type) {
+      const timer = setTimeout(() => {
+        setSubmitStatus({ type: null, message: '' });
+      }, 5000);
 
-  const handleSubmit = (e: React.FormEvent) => {
+      return () => clearTimeout(timer);
+    }
+  }, [submitStatus.type]);
+
+  // Handle typing indicator
+  const handleTyping = () => {
+    setIsTyping(true);
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      setIsTyping(false);
+    }, 800);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-  };
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
 
-  // Get temperature icon based on temperature value
-  const getTemperatureIcon = (temp: number | null) => {
-    if (temp === null) return Thermometer;
-    if (temp >= 30) return Sun;
-    if (temp >= 15) return Cloud;
-    return Snowflake;
-  };
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-  // Get temperature color based on value
-  const getTemperatureColor = (temp: number | null) => {
-    if (temp === null) return "text-primary";
-    if (temp >= 30) return "text-orange-500";
-    if (temp >= 15) return "text-blue-400";
-    return "text-cyan-400";
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitStatus({
+          type: 'success',
+          message: 'Thank you! Your message has been sent successfully.',
+        });
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: '',
+        });
+      } else {
+        setSubmitStatus({
+          type: 'error',
+          message: data.message || 'Failed to send message. Please try again.',
+        });
+      }
+    } catch (error) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Network error. Please check your connection and try again.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const socialLinks = [
-    { icon: Github, label: "GitHub", href: "#", handle: "@yourusername" },
-    { icon: Linkedin, label: "LinkedIn", href: "#", handle: "/in/yourprofile" },
-    { icon: Twitter, label: "Twitter", href: "#", handle: "@yourhandle" },
+    { icon: Github, label: "GitHub", href: "https://github.com/DeviceDidWhat", handle: "@DeviceDidWhat" },
+    { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/kavya-bhanvadia-58026a328/", handle: "/kavya-bhanvadia" },
+    { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/kavya_b4", handle: "@kavya_b4" },
   ];
 
   const contactMethods = [
-    { icon: Mail, label: "Email", value: "hello@example.com", href: "mailto:hello@example.com" },
-    { icon: MapPin, label: "Location", value: "Your City, Country", href: null },
+    { icon: Mail, label: "Email", value: "kavyabhanvadia@gmail.com", href: "mailto:kavyabhanvadia@gmail.com" },
+    { icon: MapPin, label: "Location", value: "Rajkot, Gujarat, India", href: null },
   ];
   
-  const workingHours = [
-    { day: "Mon - Fri", hours: "9:00 AM - 6:00 PM" },
-    { day: "Weekend", hours: "By appointment" },
-  ];
-
-  const responseTime = "< 24 hours";
-  const preferredMethod = "Email";
 
   return (
     <section id="contact" ref={sectionRef} className="py-24 md:py-32 relative overflow-hidden">
@@ -152,7 +196,8 @@ const Contact = () => {
                         <motion.a
                           key={social.label}
                           href={social.href}
-                          initial={{ opacity: 0, scale: 0.8 }}
+                          target="_blank"
+                          initial={{ opacity: 0, scale: 1 }}
                           animate={isInView ? { opacity: 1, scale: 1 } : {}}
                           transition={{ duration: 0.3, delay: 1.0 + index * 0.1 }}
                           whileHover={{ scale: 1.05, y: -2 }}
@@ -265,9 +310,10 @@ const Contact = () => {
                         type="text"
                         id="name"
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        onFocus={() => setIsTyping(true)}
-                        onBlur={() => setIsTyping(false)}
+                        onChange={(e) => {
+                          setFormData({ ...formData, name: e.target.value });
+                          handleTyping();
+                        }}
                         className="flex-1 ml-4 px-3 py-2 rounded-lg bg-muted/30 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground/50 font-sans text-base"
                         placeholder='Your name'
                         required
@@ -289,9 +335,10 @@ const Contact = () => {
                         type="email"
                         id="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        onFocus={() => setIsTyping(true)}
-                        onBlur={() => setIsTyping(false)}
+                        onChange={(e) => {
+                          setFormData({ ...formData, email: e.target.value });
+                          handleTyping();
+                        }}
                         className="flex-1 ml-4 px-3 py-2 rounded-lg bg-muted/30 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground/50 font-sans text-base"
                         placeholder='your@email.com'
                         required
@@ -313,9 +360,10 @@ const Contact = () => {
                         type="text"
                         id="subject"
                         value={formData.subject}
-                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        onFocus={() => setIsTyping(true)}
-                        onBlur={() => setIsTyping(false)}
+                        onChange={(e) => {
+                          setFormData({ ...formData, subject: e.target.value });
+                          handleTyping();
+                        }}
                         className="flex-1 ml-4 px-3 py-2 rounded-lg bg-muted/30 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground/50 font-sans text-base"
                         placeholder='What is this about?'
                         required
@@ -337,9 +385,10 @@ const Contact = () => {
                         id="message"
                         rows={4}
                         value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        onFocus={() => setIsTyping(true)}
-                        onBlur={() => setIsTyping(false)}
+                        onChange={(e) => {
+                          setFormData({ ...formData, message: e.target.value });
+                          handleTyping();
+                        }}
                         className="flex-1 ml-4 px-3 py-2 rounded-lg bg-muted/30 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground/50 resize-none font-sans text-base"
                         placeholder='Tell me about your project...'
                         required
@@ -361,14 +410,41 @@ const Contact = () => {
                           variant="hero"
                           size="lg"
                           className="w-full group"
+                          disabled={isSubmitting}
                         >
                           <span className="font-mono text-sm">
                             <span className="text-primary-foreground/70">await</span> sendMessage()
                           </span>
-                          <Send className="w-4 h-4 ml-2" />
+                          {isSubmitting ? (
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                              className="w-4 h-4 ml-2 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full"
+                            />
+                          ) : (
+                            <Send className="w-4 h-4 ml-2" />
+                          )}
                         </Button>
                       </div>
                     </div>
+
+                    {/* Status Message */}
+                    {submitStatus.type && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex gap-4 mb-4"
+                      >
+                        <span className="text-muted-foreground/50 select-none w-6 text-right"></span>
+                        <div className={`flex-1 ml-4 px-4 py-3 rounded-lg ${
+                          submitStatus.type === 'success'
+                            ? 'bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-400'
+                            : 'bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400'
+                        }`}>
+                          <p className="text-sm font-medium">{submitStatus.message}</p>
+                        </div>
+                      </motion.div>
+                    )}
                   </div>
                 </form>
 

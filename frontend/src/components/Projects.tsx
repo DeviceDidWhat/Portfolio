@@ -1,8 +1,21 @@
 import { ArrowUpRight, Github } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Projects = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const projects = [
     {
@@ -13,7 +26,7 @@ const Projects = () => {
       color: "from-amber-500/20 to-orange-600/20",
       year: "2025",
       github: "https://github.com/DeviceDidWhat/CodeSync",
-      demo: "#",
+      demo: "https://drive.google.com/file/d/1IdbeQRL_75Xu_kiC3Inf78QTnEe-Q4Cq/view",
     },
     {
       id: 2,
@@ -23,7 +36,7 @@ const Projects = () => {
       color: "from-violet-500/20 to-purple-600/20",
       year: "2025",
       github: "https://github.com/DeviceDidWhat/HackSprint",
-      demo: "#",
+      demo: "https://drive.google.com/file/d/1aq3jromAaVBxEyIyavbOpYC-y60DQVlO/view",
     },
     {
       id: 3,
@@ -33,7 +46,7 @@ const Projects = () => {
       color: "from-emerald-500/20 to-teal-600/20",
       year: "2025",
       github: "https://github.com/DeviceDidWhat/Library-Management-System",
-      demo: "#",
+      demo: "https://drive.google.com/file/d/1BJtyFPGTI3e42EIrPAd_v-HG3rudparW/view",
     },
     {
       id: 4,
@@ -43,7 +56,7 @@ const Projects = () => {
       color: "from-rose-500/20 to-pink-600/20",
       year: "2025",
       github: "https://github.com/DeviceDidWhat/Optimized-Kafka-Listener",
-      demo: "#",
+      demo: "https://drive.google.com/file/d/1PjbQ7vNsYGh4jJft4W9E6lng7-_yktHV/view",
     },
     {
       id: 5,
@@ -53,7 +66,7 @@ const Projects = () => {
       color: "from-blue-500/20 to-cyan-600/20",
       year: "2024",
       github: "https://github.com/DeviceDidWhat/EMAIL_SCHEDULER",
-      demo: "#",
+      demo: "https://drive.google.com/file/d/1v_nfnyWKzta0rityRLA-QD0Nrcincs9C/view",
     },
     {
       id: 6,
@@ -63,12 +76,124 @@ const Projects = () => {
       color: "from-fuchsia-500/20 to-purple-600/20",
       year: "2025",
       github: "https://github.com/DeviceDidWhat/Nexus-Connect",
-      demo: "#",
+      demo: "/",
     },
   ];
 
+  // Mobile/Tablet: Simple scrollable grid
+  if (isMobile || isTablet) {
+    return (
+      <section id="projects" className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 relative overflow-hidden min-h-screen">
+        {/* Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-primary/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-6xl mx-auto relative">
+          {/* Header */}
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <span className="text-primary font-medium tracking-[0.2em] sm:tracking-[0.3em] text-[10px] sm:text-xs uppercase mb-4 sm:mb-6 block">
+              Selected Work
+            </span>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-foreground">
+              Projects
+            </h2>
+          </div>
+
+          {/* Grid Layout for Mobile/Tablet */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+            {projects.map((project, index) => (
+              <div
+                key={project.id}
+                className="group"
+              >
+                <div className={`
+                  relative h-[420px] sm:h-[450px] md:h-[480px] rounded-2xl sm:rounded-3xl overflow-hidden
+                  bg-gradient-to-br ${project.color}
+                  border border-border/50 backdrop-blur-sm
+                  shadow-xl shadow-background/50
+                  transition-all duration-300
+                  hover:shadow-2xl hover:border-primary/50 hover:-translate-y-1
+                `}>
+                  {/* Card Number */}
+                  <div className="absolute top-4 sm:top-6 left-4 sm:left-6">
+                    <span className="text-6xl sm:text-7xl md:text-8xl font-display font-bold text-foreground/5">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="absolute inset-0 p-5 sm:p-6 md:p-8 flex flex-col justify-end">
+                    {/* Year Badge */}
+                    <span className="absolute top-4 sm:top-6 right-4 sm:right-6 text-[10px] sm:text-xs tracking-widest text-muted-foreground/60">
+                      {project.year}
+                    </span>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                      {project.tags.map(tag => (
+                        <span
+                          key={tag}
+                          className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium bg-background/30 text-foreground/80 rounded-full backdrop-blur-sm border border-border/30"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-2 sm:mb-3">
+                      {project.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
+                      {project.description}
+                    </p>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-foreground text-background rounded-full text-xs sm:text-sm font-medium hover:bg-primary transition-colors"
+                      >
+                        View Project
+                        <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                      </a>
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center hover:border-foreground transition-colors"
+                      >
+                        <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Corner Decoration */}
+                  <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32">
+                    <div className="absolute top-6 right-6 sm:top-8 sm:right-8 w-12 sm:w-16 h-12 sm:h-16 border-t-2 border-r-2 border-primary/20 rounded-tr-2xl" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Instruction */}
+          <p className="text-center text-muted-foreground/50 text-xs sm:text-sm mt-12 sm:mt-16 tracking-wide">
+            Explore all projects
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  // Desktop: Stacked card interaction
   return (
-    <section id="projects" className="py-32 px-6 relative overflow-hidden min-h-screen">
+    <section id="projects" className="py-24 lg:py-32 px-6 lg:px-8 relative overflow-hidden min-h-screen">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl" />
@@ -76,17 +201,17 @@ const Projects = () => {
 
       <div className="max-w-6xl mx-auto relative">
         {/* Header */}
-        <div className="text-center mb-24">
+        <div className="text-center mb-20 lg:mb-24">
           <span className="text-primary font-medium tracking-[0.3em] text-xs uppercase mb-6 block">
             Selected Work
           </span>
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-foreground">
+          <h2 className="text-6xl lg:text-7xl xl:text-8xl font-display font-bold text-foreground">
             Projects
           </h2>
         </div>
 
         {/* Stacked Cards */}
-        <div className="relative h-[500px] md:h-[550px] flex items-center justify-center">
+        <div className="relative h-[500px] lg:h-[550px] xl:h-[600px] flex items-center justify-center">
           {projects.map((project, index) => {
             const isActive = activeIndex === index;
             const totalCards = projects.length;
@@ -133,7 +258,7 @@ const Projects = () => {
             return (
               <div
                 key={project.id}
-                className="absolute w-[320px] md:w-[400px] cursor-pointer"
+                className="absolute w-[380px] lg:w-[400px] xl:w-[420px] cursor-pointer"
                 style={{
                   transform: `
                     translateX(${transform.translateX}px) 
@@ -148,7 +273,7 @@ const Projects = () => {
                 onMouseLeave={() => setActiveIndex(null)}
               >
                 <div className={`
-                  relative h-[400px] md:h-[450px] rounded-3xl overflow-hidden
+                  relative h-[450px] lg:h-[480px] xl:h-[500px] rounded-3xl overflow-hidden
                   bg-gradient-to-br ${project.color}
                   border border-border/50 backdrop-blur-sm
                   shadow-2xl shadow-background/50
@@ -156,13 +281,13 @@ const Projects = () => {
                 `}>
                   {/* Card Number */}
                   <div className="absolute top-6 left-6">
-                    <span className="text-8xl font-display font-bold text-foreground/5">
+                    <span className="text-7xl lg:text-8xl font-display font-bold text-foreground/5">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                   </div>
 
                   {/* Content */}
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <div className="absolute inset-0 p-7 lg:p-8 flex flex-col justify-end">
                     {/* Year Badge */}
                     <span className="absolute top-6 right-6 text-xs tracking-widest text-muted-foreground/60">
                       {project.year}
@@ -181,7 +306,7 @@ const Projects = () => {
                     </div>
 
                     {/* Title */}
-                    <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3">
+                    <h3 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
                       {project.title}
                     </h3>
 
@@ -194,6 +319,8 @@ const Projects = () => {
                     <div className="flex items-center gap-3">
                       <a
                         href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="flex items-center gap-2 px-5 py-2.5 bg-foreground text-background rounded-full text-sm font-medium hover:bg-primary transition-colors"
                       >
                         View Project
@@ -201,6 +328,8 @@ const Projects = () => {
                       </a>
                       <a
                         href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:border-foreground transition-colors"
                       >
                         <Github className="w-4 h-4 text-muted-foreground" />
@@ -219,7 +348,7 @@ const Projects = () => {
         </div>
 
         {/* Instruction */}
-        <p className="text-center text-muted-foreground/50 text-sm mt-16 tracking-wide">
+        <p className="text-center text-muted-foreground/50 text-sm mt-16 lg:mt-20 tracking-wide">
           Hover over cards to explore
         </p>
       </div>
