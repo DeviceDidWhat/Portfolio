@@ -1,142 +1,398 @@
-import { Mail, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Send, Github, Linkedin, Twitter, Clock, Zap, Code, Sparkles, Calendar, Thermometer, Sun, Cloud, Snowflake } from "lucide-react";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    subject: "",
     message: "",
   });
+  const [isTyping, setIsTyping] = useState(false);
+  const [temperature, setTemperature] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
+  // Fetch live temperature from OpenWeatherMap API
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
     console.log("Form submitted:", formData);
   };
 
+  // Get temperature icon based on temperature value
+  const getTemperatureIcon = (temp: number | null) => {
+    if (temp === null) return Thermometer;
+    if (temp >= 30) return Sun;
+    if (temp >= 15) return Cloud;
+    return Snowflake;
+  };
+
+  // Get temperature color based on value
+  const getTemperatureColor = (temp: number | null) => {
+    if (temp === null) return "text-primary";
+    if (temp >= 30) return "text-orange-500";
+    if (temp >= 15) return "text-blue-400";
+    return "text-cyan-400";
+  };
+
+  const socialLinks = [
+    { icon: Github, label: "GitHub", href: "#", handle: "@yourusername" },
+    { icon: Linkedin, label: "LinkedIn", href: "#", handle: "/in/yourprofile" },
+    { icon: Twitter, label: "Twitter", href: "#", handle: "@yourhandle" },
+  ];
+
+  const contactMethods = [
+    { icon: Mail, label: "Email", value: "hello@example.com", href: "mailto:hello@example.com" },
+    { icon: MapPin, label: "Location", value: "Your City, Country", href: null },
+  ];
+  
+  const workingHours = [
+    { day: "Mon - Fri", hours: "9:00 AM - 6:00 PM" },
+    { day: "Weekend", hours: "By appointment" },
+  ];
+
+  const responseTime = "< 24 hours";
+  const preferredMethod = "Email";
+
   return (
-    <section id="contact" className="py-24 md:py-32 relative bg-card/30">
-      <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-primary font-medium tracking-widest uppercase text-sm mb-4">
-              Contact
-            </p>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Let's <span className="text-gradient italic">Connect</span>
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-              Have a project in mind or just want to chat? I'd love to hear from you.
-            </p>
-          </div>
+    <section id="contact" ref={sectionRef} className="py-24 md:py-32 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-card/30 to-background" />
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+      </div>
 
-          <div className="grid lg:grid-cols-5 gap-12">
-            {/* Contact Info */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                  <Mail className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                  <a
-                    href="mailto:hello@example.com"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    hello@example.com
-                  </a>
-                </div>
-              </div>
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="h-full w-full" style={{
+          backgroundImage: `linear-gradient(hsl(var(--primary) / 0.3) 1px, transparent 1px),
+                           linear-gradient(90deg, hsl(var(--primary) / 0.3) 1px, transparent 1px)`,
+          backgroundSize: '50px 50px'
+        }} />
+      </div>
 
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground mb-1">Location</h3>
-                  <p className="text-muted-foreground">Your City, Country</p>
-                </div>
-              </div>
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6">
+            Let's <span className="text-gradient italic">Connect</span>
+            <br />
+          </h2>
 
-              <div className="pt-6 border-t border-border">
-                <p className="text-sm text-muted-foreground">
-                  Currently available for freelance projects and internship opportunities.
-                </p>
-              </div>
-            </div>
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto font-light">
+            Have a project in mind or just want to chat? I'd love to hear from you.
+          </p>
+        </motion.div>
 
-            {/* Contact Form */}
-            <form
-              onSubmit={handleSubmit}
-              className="lg:col-span-3 space-y-6"
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+
+            {/* Left Side - Terminal Style Info */}
+            {/* Left Side - Terminal Style Info */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="space-y-6"
             >
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-foreground mb-2"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground"
-                    placeholder="Your name"
-                    required
-                  />
+              {/* Terminal Window */}
+              <div className="rounded-xl border border-border bg-card/80 backdrop-blur-sm overflow-hidden">
+                {/* Terminal Header */}
+                <div className="flex items-center gap-2 px-4 py-3 bg-muted/50 border-b border-border">
+                  <div className="flex gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                    <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                  </div>
+                  <span className="ml-2 text-xs text-muted-foreground font-mono">contact_info.sh</span>
                 </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-foreground mb-2"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground"
-                    placeholder="your@email.com"
-                    required
-                  />
+
+                {/* Terminal Content */}
+                <div className="p-6 font-mono text-sm space-y-4">
+                  <div className="text-muted-foreground">
+                    <span className="text-primary">$</span> cat contact_methods.txt
+                  </div>
+
+                  {contactMethods.map((method, index) => (
+                    <motion.div
+                      key={method.label}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={isInView ? { opacity: 1, x: 0 } : {}}
+                      transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
+                      className="flex items-center gap-3 pl-4"
+                    >
+                      <method.icon className="w-4 h-4 text-primary" />
+                      <span className="text-muted-foreground">{method.label}:</span>
+                      {method.href ? (
+                        <a href={method.href} className="text-foreground hover:text-primary transition-colors">
+                          {method.value}
+                        </a>
+                      ) : (
+                        <span className="text-foreground">{method.value}</span>
+                      )}
+                    </motion.div>
+                  ))}
+
+                  <div className="pt-4 border-t border-border/50">
+                    <div className="text-muted-foreground mb-3">
+                      <span className="text-primary">$</span> ls ./social_links/
+                    </div>
+
+                    <div className="flex flex-wrap gap-3 pl-4">
+                      {socialLinks.map((social, index) => (
+                        <motion.a
+                          key={social.label}
+                          href={social.href}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                          transition={{ duration: 0.3, delay: 1.0 + index * 0.1 }}
+                          whileHover={{ scale: 1.05, y: -2 }}
+                          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/50 hover:bg-primary/10 border border-border hover:border-primary/30 transition-all group"
+                        >
+                          <social.icon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                          <span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">
+                            {social.handle}
+                          </span>
+                        </motion.a>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-border/50">
+                    <div className="text-muted-foreground mb-3">
+                      <span className="text-primary">$</span> echo "Let's build something amazing together!"
+                    </div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={isInView ? { opacity: 1 } : {}}
+                      transition={{ duration: 0.5, delay: 1.3 }}
+                      className="pl-4 text-foreground"
+                    >
+                      Let's build something amazing together!
+                    </motion.div>
+                  </div>
+
+                  <div className="pt-4">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <span className="text-primary">$</span>
+                      <span className="animate-pulse">_</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
-                  className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground resize-none"
-                  placeholder="Tell me about your project..."
-                  required
-                />
-              </div>
+              {/* Status Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 1.4 }}
+                className="p-6 rounded-xl border border-primary/20 bg-gradient-to-br from-primary/5 to-transparent"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                      <span className="text-sm font-medium text-foreground">Available for work</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Currently open to freelance projects and internship opportunities. Let's discuss how we can collaborate!
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
 
-              <Button type="submit" variant="hero" size="lg" className="w-full sm:w-auto">
-                <Send className="w-4 h-4 mr-2" />
-                Send Message
-              </Button>
-            </form>
+            {/* Right Side - Form as Code Editor */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <div className="rounded-xl border border-border bg-card/80 backdrop-blur-sm overflow-hidden">
+                {/* Editor Header */}
+                <div className="flex items-center justify-between px-4 py-3 bg-muted/50 border-b border-border">
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                      <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                    </div>
+                    <span className="ml-2 text-xs text-muted-foreground font-mono">message.tsx</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Code className="w-4 h-4 text-muted-foreground" />
+                  </div>
+                </div>
+
+                {/* Editor Content */}
+                <form onSubmit={handleSubmit} className="p-6">
+                  {/* Line Numbers + Code Style */}
+                  <div className="font-mono text-sm">
+                    {/* Interface declaration */}
+                    <div className="flex gap-4 mb-4">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right">1</span>
+                      <div>
+                        <span className="text-purple-400">interface</span>
+                        <span className="text-foreground"> Message </span>
+                        <span className="text-muted-foreground">{"{"}</span>
+                      </div>
+                    </div>
+
+                    {/* Name Field */}
+                    <div className="flex gap-4 mb-1">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right">2</span>
+                      <div className="flex-1">
+                        <span className="text-muted-foreground pl-4">name:</span>
+                        <span className="text-blue-400"> string</span>
+                        <span className="text-muted-foreground">;</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 mb-4">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right"></span>
+                      <input
+                        type="text"
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onFocus={() => setIsTyping(true)}
+                        onBlur={() => setIsTyping(false)}
+                        className="flex-1 ml-4 px-3 py-2 rounded-lg bg-muted/30 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground/50 font-sans text-base"
+                        placeholder='Your name'
+                        required
+                      />
+                    </div>
+
+                    {/* Email Field */}
+                    <div className="flex gap-4 mb-1">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right">3</span>
+                      <div className="flex-1">
+                        <span className="text-muted-foreground pl-4">email:</span>
+                        <span className="text-blue-400"> string</span>
+                        <span className="text-muted-foreground">;</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 mb-4">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right"></span>
+                      <input
+                        type="email"
+                        id="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onFocus={() => setIsTyping(true)}
+                        onBlur={() => setIsTyping(false)}
+                        className="flex-1 ml-4 px-3 py-2 rounded-lg bg-muted/30 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground/50 font-sans text-base"
+                        placeholder='your@email.com'
+                        required
+                      />
+                    </div>
+
+                    {/* Subject Field */}
+                    <div className="flex gap-4 mb-1">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right">4</span>
+                      <div className="flex-1">
+                        <span className="text-muted-foreground pl-4">subject:</span>
+                        <span className="text-blue-400"> string</span>
+                        <span className="text-muted-foreground">;</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 mb-4">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right"></span>
+                      <input
+                        type="text"
+                        id="subject"
+                        value={formData.subject}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                        onFocus={() => setIsTyping(true)}
+                        onBlur={() => setIsTyping(false)}
+                        className="flex-1 ml-4 px-3 py-2 rounded-lg bg-muted/30 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground/50 font-sans text-base"
+                        placeholder='What is this about?'
+                        required
+                      />
+                    </div>
+
+                    {/* Message Field */}
+                    <div className="flex gap-4 mb-1">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right">5</span>
+                      <div className="flex-1">
+                        <span className="text-muted-foreground pl-4">message:</span>
+                        <span className="text-blue-400"> string</span>
+                        <span className="text-muted-foreground">;</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 mb-4">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right"></span>
+                      <textarea
+                        id="message"
+                        rows={4}
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        onFocus={() => setIsTyping(true)}
+                        onBlur={() => setIsTyping(false)}
+                        className="flex-1 ml-4 px-3 py-2 rounded-lg bg-muted/30 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground/50 resize-none font-sans text-base"
+                        placeholder='Tell me about your project...'
+                        required
+                      />
+                    </div>
+
+                    {/* Closing brace */}
+                    <div className="flex gap-4 mb-6">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right">6</span>
+                      <span className="text-muted-foreground">{"}"}</span>
+                    </div>
+
+                    {/* Submit function */}
+                    <div className="flex gap-4 mb-4">
+                      <span className="text-muted-foreground/50 select-none w-6 text-right">7</span>
+                      <div className="flex-1">
+                        <Button
+                          type="submit"
+                          variant="hero"
+                          size="lg"
+                          className="w-full group"
+                        >
+                          <span className="font-mono text-sm">
+                            <span className="text-primary-foreground/70">await</span> sendMessage()
+                          </span>
+                          <Send className="w-4 h-4 ml-2" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                {/* Editor Footer */}
+                <div className="px-4 py-2 bg-muted/30 border-t border-border flex items-center justify-between text-xs text-muted-foreground font-mono">
+                  <div className="flex items-center gap-4">
+                    <span>TypeScript React</span>
+                    <span>UTF-8</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {isTyping && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-primary"
+                      >
+                        Typing...
+                      </motion.span>
+                    )}
+                    <span>Ln 7, Col 1</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -144,4 +400,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default Contact; 
