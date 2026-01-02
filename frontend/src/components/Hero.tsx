@@ -117,7 +117,7 @@ const Hero = () => {
           <motion.h1
             className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-foreground mb-8 pb-4 overflow-visible"
             variants={nameVariants}
-            style={{ 
+            style={{
               perspective: "1000px",
               lineHeight: "1.2"
             }}
@@ -148,22 +148,14 @@ const Hero = () => {
             className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed"
             variants={itemVariants}
           >
-            A passionate student crafting digital experiences through{" "}
+            A passionate{" "}
             <motion.span
               className="text-foreground font-semibold"
-              whileHover={{ scale: 1.1, color: "var(--primary)" }}
               style={{ display: "inline-block", cursor: "default" }}
             >
-              design
+              software developer
             </motion.span>{" "}
-            and{" "}
-            <motion.span
-              className="text-foreground font-semibold"
-              whileHover={{ scale: 1.1, color: "var(--primary)" }}
-              style={{ display: "inline-block", cursor: "default" }}
-            >
-              development
-            </motion.span>
+            focused on building efficient, scalable, and impactful solutions.{" "}
           </motion.p>
 
           {/* CTA Buttons - FIXED click functionality */}

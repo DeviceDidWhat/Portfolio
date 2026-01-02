@@ -7,67 +7,63 @@ const Projects = () => {
   const projects = [
     {
       id: 1,
-      title: "E-Commerce Platform",
-      description: "Full-stack e-commerce with real-time inventory and payments.",
-      tags: ["React", "Node.js", "Stripe"],
+      title: "CodeSync",
+      description: "Real-time coding interview platform with Collaborative Code Editor, HD video calls, screen sharing, and isolated code execution for test cases with instant feedback.",
+      tags: ["Node.js", "React.js", "Socket.io", "Docker"],
       color: "from-amber-500/20 to-orange-600/20",
-      year: "2024",
+      year: "2025",
+      github: "https://github.com/DeviceDidWhat/CodeSync",
+      demo: "#",
     },
     {
       id: 2,
-      title: "AI Dashboard",
-      description: "Analytics platform with machine learning insights.",
-      tags: ["Python", "TensorFlow"],
+      title: "HackSprint",
+      description: "Centralized hackathon platform for many participants with role-based access, real-time leaderboard using Socket.io, and GitHub-based submissions for hackathons.",
+      tags: ["Redis", "Socket.io", "Kestra", "Node.js", "React.js","MongoDB"],
       color: "from-violet-500/20 to-purple-600/20",
-      year: "2024",
+      year: "2025",
+      github: "https://github.com/DeviceDidWhat/HackSprint",
+      demo: "#",
     },
     {
       id: 3,
-      title: "Mobile Banking",
-      description: "Secure fintech application with biometric auth.",
-      tags: ["React Native", "Firebase"],
+      title: "Library Management System",
+      description: "Full-stack document delivery platform supporting 1,000+ PDF assets with MongoDB GridFS, JWT authentication, and automated email notifications.",
+      tags: ["Node.js", "React.js", "MongoDB", "Tailwind CSS"],
       color: "from-emerald-500/20 to-teal-600/20",
-      year: "2024",
+      year: "2025",
+      github: "https://github.com/DeviceDidWhat/Library-Management-System",
+      demo: "#",
     },
     {
       id: 4,
-      title: "Design System",
-      description: "Component library with 50+ reusable elements.",
-      tags: ["TypeScript", "Storybook"],
+      title: "Optimized-Kafka-Listener",
+      description: "Custom Apache Kafka consumer framework with supervisor-controlled lifecycle, crash recovery, and adaptive polling reducing idle CPU usage by 40%.",
+      tags: ["Java", "Spring Boot", "Apache Kafka"],
       color: "from-rose-500/20 to-pink-600/20",
-      year: "2023",
+      year: "2025",
+      github: "https://github.com/DeviceDidWhat/Optimized-Kafka-Listener",
+      demo: "#",
     },
     {
       id: 5,
-      title: "Task Management App",
-      description: "Collaborative workspace with real-time sync and notifications.",
-      tags: ["Vue.js", "WebSocket", "MongoDB"],
+      title: "Email Scheduler",
+      description: "Full-stack email scheduling system managing 1,000+ emails/day with Spring Security, JWT authentication, and Apache POI for parsing 500+ row datasets.",
+      tags: ["Java", "Spring Boot", "React.js", "MySQL"],
       color: "from-blue-500/20 to-cyan-600/20",
       year: "2024",
+      github: "https://github.com/DeviceDidWhat/EMAIL_SCHEDULER",
+      demo: "#",
     },
     {
       id: 6,
-      title: "Social Media Analytics",
-      description: "Track engagement metrics across multiple platforms.",
-      tags: ["Next.js", "GraphQL", "PostgreSQL"],
+      title: "Nexus Connect",
+      description: "Privacy-focused real-time communication platform with secure text messaging, low-latency video/voice calls using WebRTC, and seamless file sharing.",
+      tags: ["React.js", "Node.js", "Socket.io", "WebRTC", "MongoDB"],
       color: "from-fuchsia-500/20 to-purple-600/20",
-      year: "2023",
-    },
-    {
-      id: 7,
-      title: "Fitness Tracker",
-      description: "Health monitoring with AI-powered workout recommendations.",
-      tags: ["React", "Express", "TensorFlow"],
-      color: "from-green-500/20 to-emerald-600/20",
-      year: "2023",
-    },
-    {
-      id: 8,
-      title: "Video Streaming Platform",
-      description: "Netflix-like platform with adaptive streaming and CDN integration.",
-      tags: ["Angular", "AWS", "Redis"],
-      color: "from-red-500/20 to-rose-600/20",
-      year: "2022",
+      year: "2025",
+      github: "https://github.com/DeviceDidWhat/Nexus-Connect",
+      demo: "#",
     },
   ];
 
@@ -94,8 +90,8 @@ const Projects = () => {
           {projects.map((project, index) => {
             const isActive = activeIndex === index;
             const totalCards = projects.length;
-            const baseRotation = -20 + (index * 6);
-            const baseTranslateX = -210 + (index * 60);
+            const baseRotation = -15 + (index * 6);
+            const baseTranslateX = -150 + (index * 60);
             const baseTranslateY = index * 3;
             
             // When a card is active, spread others out
@@ -197,14 +193,14 @@ const Projects = () => {
                     {/* Actions */}
                     <div className="flex items-center gap-3">
                       <a
-                        href="#"
+                        href={project.demo}
                         className="flex items-center gap-2 px-5 py-2.5 bg-foreground text-background rounded-full text-sm font-medium hover:bg-primary transition-colors"
                       >
                         View Project
                         <ArrowUpRight className="w-4 h-4" />
                       </a>
                       <a
-                        href="#"
+                        href={project.github}
                         className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:border-foreground transition-colors"
                       >
                         <Github className="w-4 h-4 text-muted-foreground" />

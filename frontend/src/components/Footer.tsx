@@ -1,46 +1,58 @@
-import { Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { Github, Linkedin, Mail, Twitter, Heart } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
   const socialLinks = [
-    { icon: <Github size={20} />, href: "https://github.com", label: "GitHub" },
-    { icon: <Linkedin size={20} />, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: <Twitter size={20} />, href: "https://twitter.com", label: "Twitter" },
-    { icon: <Mail size={20} />, href: "mailto:hello@example.com", label: "Email" },
+    { icon: <Github size={18} />, href: "https://github.com", label: "GitHub" },
+    { icon: <Linkedin size={18} />, href: "https://linkedin.com", label: "LinkedIn" },
+    { icon: <Twitter size={18} />, href: "https://twitter.com", label: "Twitter" },
+    { icon: <Mail size={18} />, href: "mailto:hello@example.com", label: "Email" },
   ];
 
   return (
-    <footer className="py-12 border-t border-border">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Logo */}
-          <a
-            href="#"
-            className="font-display text-xl font-semibold text-foreground hover:text-primary transition-colors"
-          >
-            Portfolio<span className="text-primary">.</span>
-          </a>
-
-          {/* Social Links */}
-          <div className="flex items-center gap-4">
-            {socialLinks.map((link, index) => (
-              <a
-                key={index}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={link.label}
-                className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all duration-300"
-              >
-                {link.icon}
-              </a>
-            ))}
+    <footer className="relative bg-background border-t border-border overflow-hidden">
+      {/* Main footer content */}
+      <div className="container mx-auto px-6 py-8 relative z-10">
+        <motion.div
+          className="flex flex-col md:flex-row items-center justify-between gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 text-sm text-muted-foreground">
+            <p>© {currentYear} All rights reserved.</p>
+            <div className="hidden md:block w-px h-4 bg-border" />
+            
+            {/* Social links with enhanced hover */}
+            <div className="flex items-center gap-3">
+              {socialLinks.map((link, index) => (
+                <motion.a
+                  key={link.label}
+                  href={link.href}
+                  aria-label={link.label}
+                  className="group relative flex items-center justify-center w-10 h-10 rounded-lg border border-border bg-background/50 backdrop-blur-sm hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + index * 0.1 }}
+                >
+                  <span className="text-muted-foreground group-hover:text-primary transition-colors duration-300">
+                    {link.icon}
+                  </span>
+                </motion.a>
+              ))}
+            </div>
           </div>
 
-          {/* Copyright */}
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} All rights reserved.
+          <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            Made with
+            <Heart size={14} className="text-primary fill-primary animate-pulse" />
+            by Kavya Bhanvadia
           </p>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

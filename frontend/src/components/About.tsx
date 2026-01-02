@@ -1,4 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
+import { GraduationCap, Phone, Download } from "lucide-react";
+import { Button } from "./ui/button";
 import { useRef } from "react";
 
 const About = () => {
@@ -45,28 +47,6 @@ const About = () => {
       transition: {
         duration: 1.2,
         ease: [0.22, 1, 0.36, 1] as const,
-      },
-    },
-  };
-
-  const statsVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const statItemVariants = {
-    hidden: { opacity: 0, scale: 0.5 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.34, 1.56, 0.64, 1] as const, // backOut effect
       },
     },
   };
@@ -181,7 +161,7 @@ const About = () => {
                 className="absolute -bottom-4 -right-4 bg-primary px-4 py-2"
               >
                 <p className="text-xs font-bold text-primary-foreground tracking-wider uppercase">
-                  Creative Developer
+                  Software Developer
                 </p>
               </motion.div>
 
@@ -256,16 +236,16 @@ const About = () => {
                   >
                     I
                   </motion.span>
-                  am a student and developer with an insatiable curiosity for creating
-                  meaningful digital experiences. Every project is an opportunity to
-                  push boundaries and explore new possibilities.
+                  have a strong passion for building impactful and
+                  scalable software solutions. I have worked on multiple full-stack projects and gained
+                  hands-on experience with modern technologies and frameworks, including Kafka, through real-world implementations.
                 </p>
               </motion.div>
               <motion.div variants={itemVariants}>
                 <p className="text-muted-foreground leading-relaxed">
-                  My approach blends thoughtful design with clean, efficient code.
-                  I believe that the best digital products are those that feel
-                  intuitive, look beautiful, and solve real problems elegantly.
+                  My journey focuses on writing clean, efficient code and building systems that solve meaningful problems.
+                  I enjoy turning ideas into reliable applications and continuously improving my skills through practical
+                  development and exploration of new technologies.
                 </p>
               </motion.div>
             </motion.div>
@@ -284,7 +264,7 @@ const About = () => {
                 viewport={{ once: true }}
                 className="font-display text-xl md:text-2xl text-foreground italic"
               >
-                "Design is not just what it looks like. Design is how it works."
+                "Don’t watch the clock; do what it does. Keep going."
               </motion.p>
               <motion.cite
                 initial={{ opacity: 0 }}
@@ -293,72 +273,100 @@ const About = () => {
                 viewport={{ once: true }}
                 className="text-sm text-muted-foreground mt-2 block not-italic"
               >
-                — Steve Jobs
+                — Sam Levenson
               </motion.cite>
             </motion.blockquote>
 
-            {/* Stats as magazine infographic */}
-            <motion.div
-              variants={statsVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              // whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-2 gap-4 p-6 bg-muted/30 border border-border"
-            >
-              {[
-                { value: "3+", label: "Years of Experience", detail: "Coding & Designing" },
-                { value: "20+", label: "Projects Completed", detail: "Web & Mobile" },
-              ].map((stat, index) => (
-                <motion.div
-                  variants={statItemVariants}
-                  key={stat.label}
-                  // whileHover={{ y: -5, scale: 1.05 }}
-                  className="text-center"
-                >
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{
-                      duration: 0.8,
-                      delay: index * 0.1,
-                      type: "spring",
-                      stiffness: 150,
-                    }}
-                    viewport={{ once: true }}
-                    className="text-4xl md:text-5xl font-display font-bold text-primary mb-1"
-                  >
-                    {stat.value}
-                  </motion.div>
-                  <div className="text-xs font-bold text-foreground uppercase tracking-wider">
-                    {stat.label}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {stat.detail}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+            {/* Info Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+              {/* Education Card */}
+              <motion.div
+                className="relative flex items-start gap-3 p-4 bg-card border border-border rounded-lg hover:border-primary/50 transition-colors group"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+              >
+                {/* Absolute Badge - Top Right */}
+                <div className="absolute top-3 right-3">
+                  <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary ring-1 ring-inset ring-primary/20">
+                    2028
+                  </span>
+                </div>
 
-            {/* Download button for resume */}
+                {/* Icon - Smaller & Tighter */}
+                <div className="w-10 h-10 bg-primary/5 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/10 transition-colors">
+                  <GraduationCap className="w-5 h-5 text-primary" />
+                </div>
+
+                {/* Content */}
+                <div className="flex flex-col">
+                  {/* Label (looks like a mini-heading) */}
+                  <h4 className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-0.5">
+                    Education
+                  </h4>
+
+                  {/* Main Value */}
+                  <p className="font-display text-base font-bold text-foreground leading-tight">
+                    IIT Jodhpur
+                  </p>
+
+                  {/* Subtext */}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    B.Tech in Computer Science
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Phone Card */}
+              <motion.div
+                className="relative flex items-start gap-3 p-4 bg-card border border-border rounded-lg hover:border-primary/50 transition-colors group"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+              >
+                {/* Icon */}
+                <div className="w-10 h-10 bg-primary/5 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/10 transition-colors">
+                  <Phone className="w-5 h-5 text-primary" />
+                </div>
+
+                {/* Content */}
+                <div className="flex flex-col">
+                  {/* Label */}
+                  <h4 className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-0.5">
+                    Phone
+                  </h4>
+
+                  {/* Main Value */}
+                  <p className="font-display text-base font-bold text-foreground leading-tight">
+                    +91 79901 60242
+                  </p>
+
+                  {/* Subtext */}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Available for opportunities
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Download Resume Button */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
               viewport={{ once: true }}
-              className="mt-12"
+              transition={{ delay: 0.6 }}
             >
-              <motion.a
-                href="/resume.pdf"
-                download="Resume.pdf"
-                whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
+              <Button
+                variant="hero"
+                size="lg"
+                className="gap-3"
+                onClick={() => window.open('#', '_blank')}
               >
+                <Download className="w-5 h-5" />
                 Download Resume
-              </motion.a>
+              </Button>
             </motion.div>
           </motion.div>
         </motion.div>
