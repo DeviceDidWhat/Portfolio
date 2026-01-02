@@ -74,7 +74,7 @@ app.post('/api/contact', async (req, res) => {
 });
 
 //For deployment
-if (ENV.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
     app.get("/{*any}", (req, res) => {
