@@ -51,7 +51,7 @@ const Contact = () => {
     setSubmitStatus({ type: null, message: '' });
 
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL, {
+      const response = await fetch('https://formspree.io/f/xzdzlwak', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,9 +59,7 @@ const Contact = () => {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (response.ok) {
         setSubmitStatus({
           type: 'success',
           message: 'Thank you! Your message has been sent successfully.',
@@ -76,7 +74,7 @@ const Contact = () => {
       } else {
         setSubmitStatus({
           type: 'error',
-          message: data.message || 'Failed to send message. Please try again.',
+          message: 'Failed to send message. Please try again.',
         });
       }
     } catch (error) {
