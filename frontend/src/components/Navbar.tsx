@@ -106,7 +106,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
+          <div className="md:hidden py-4 border-t border-border bg-background/95 backdrop-blur-lg">
             {navLinks.map((link) => (
               <button
                 key={link.name}
@@ -114,9 +114,9 @@ const Navbar = () => {
                   scrollToSection(link.section);
                   setIsMobileMenuOpen(false);
                 }}
-                className={`block py-3 transition-colors w-full text-left ${
+                className={`block py-3 px-2 transition-colors w-full text-left text-base font-medium rounded-md hover:bg-primary/10 ${
                   activeSection === link.section
-                    ? "text-primary"
+                    ? "text-primary bg-primary/5"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
