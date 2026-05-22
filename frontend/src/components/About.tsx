@@ -395,7 +395,7 @@ const About = () => {
                 variant="hero"
                 size="lg"
                 className="gap-2 sm:gap-3 text-sm sm:text-base w-full sm:w-auto"
-                onClick={() => window.open('https://drive.google.com/file/d/1mv0UiEn3jLNDCCje7vrlc6Cezpgs05Mt/view?usp=sharing', '_blank')}
+                onClick={() => window.open('https://drive.google.com/file/d/1Vkw6_STvIBBldaXpSyjAvwLTK7v7drA0/view?usp=sharing', '_blank')}
               >
                 <Download className="w-4 h-4 sm:w-5 sm:h-5" />
                 Download Resume
